@@ -90,6 +90,7 @@ let handleProductClick = function (evt) {
     }
     renderRandomProducts();
   } else {
+    imageSection.removeEventListener('click', handleProductClick)
     renderProductData();
   }
 };
@@ -98,9 +99,7 @@ let handleProductClick = function (evt) {
 let renderProductData = function () {
   for (let i = 0; i < allProducts.length; i++) {
     let newLi = document.createElement("li");
-    let listProductHead = document.createElement("h5");
-    listProductHead.innerText = allProducts[i].name;
-    newLi.innerText = `${listProductHead} was shown ${allProducts[i].timesShown} times and clicked ${allProducts[i].clicks} times`;
+    newLi.innerText = `${allProducts[i].name} was shown ${allProducts[i].timesShown} times and clicked ${allProducts[i].clicks} times`;
     totalsList.appendChild(newLi);
   }
 };
