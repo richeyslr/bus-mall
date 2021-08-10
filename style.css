@@ -1,3 +1,21 @@
 img {
   max-width: 15vw;
+  padding: 2vw;
+  border: solid .3vw black;
+}
+#chartDiv {
+  width: 50vw;
+}
+section,#dataSection{
+  display: inline-flex;
+  margin: auto;
+}
+h1,#productSelection{
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  align-content: center;
+}
+.productImgs{
+  margin: 3vw;
 }
