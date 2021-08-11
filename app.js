@@ -28,6 +28,7 @@ let allProducts = [
   new ProductObj("Dog Duck", "./product-images/assets/dog-duck.jpg"),
   new ProductObj("Dragon", "./product-images/assets/dragon.jpg"),
   new ProductObj("Pen", "./product-images/assets/pen.jpg"),
+  new ProductObj("Pet Sweep", "./product-images/assets/pet-sweep.jpg"),
   new ProductObj("Scissors", "./product-images/assets/scissors.jpg"),
   new ProductObj("Shark", "./product-images/assets/shark.jpg"),
   new ProductObj("Sweep", "./product-images/assets/sweep.png"),
@@ -40,8 +41,7 @@ let allProducts = [
 let productLabels = [];
 let productClicks = [];
 let productTimesShown = [];
-// make array to prevent repeating images in consecutive voting rounds
-let productIndeces = [];
+
 
 // define names for DOM targets
 const imageSection = document.querySelector("#imageSection");
@@ -56,53 +56,54 @@ const rightImg = document.querySelector("#rightImg");
 const rightImgText = document.querySelector("#rightImgText");
 const totalsTable = document.querySelector("#totalsTable");
 const resultsButton = document.querySelector("#resultsButton");
+const dataButton = document.createElement('button');
 
-// create a function to randomly generate array Products and render them on page in designated spot
-let renderRandomProducts = function () {
-  let duplicates = true;
-  let repeats = true;
-  while (duplicates && repeats) {
-    let leftProductIndex = Math.floor(Math.random() * allProducts.length);
-    let middleProductIndex = Math.floor(Math.random() * allProducts.length);
-    let rightProductIndex = Math.floor(Math.random() * allProducts.length);
-    // check for repeats from indeces array
-    if (productIndeces.indexOf(leftProductIndex) < 0 && productIndeces.indexOf(middleProductIndex) < 0 && productIndeces.indexOf(rightProductIndex) < 0){
-      repeats = false;
-      // clear the array if the checks pass
-      productIndeces.pop();
-      productIndeces.pop();
-      productIndeces.pop();
-      if (
-      leftProductIndex != rightProductIndex &&
-      leftProductIndex != middleProductIndex &&
-      middleProductIndex != rightProductIndex
-    ) {
-      duplicates = false;
-      leftProduct = allProducts[leftProductIndex];
-      middleProduct = allProducts[middleProductIndex];
-      rightProduct = allProducts[rightProductIndex];
-      allProducts[leftProductIndex].timesShown++;
-      allProducts[middleProductIndex].timesShown++;
-      allProducts[rightProductIndex].timesShown++;
-      leftImg.src = allProducts[leftProductIndex].imgSrc;
-      leftImgText.innerText = allProducts[leftProductIndex].name;
-      middleImg.src = allProducts[middleProductIndex].imgSrc;
-      middleImgText.innerText = allProducts[middleProductIndex].name;
-      rightImg.src = allProducts[rightProductIndex].imgSrc;
-      rightImgText.innerText = allProducts[rightProductIndex].name;
-      productIndeces.push(leftProductIndex, middleProductIndex, rightProductIndex);
+// create a function to randomly generate array Products that dont duplicate or repeat
+let chooseRandomProducts = function () {
+  // shuffle the array of product objects to randomize their position in the array
+  shuffle(allProducts);
+
+  // create a new empty array to hold chosen products
+  let chosenProducts = [];
+
+  for (let i = 0; i < allProducts.length; i++) {
+
+    // set a variable to represent each object in each iteration of the index
+    let chosenProduct = allProducts[i];
+
+    if(chosenProduct != leftProduct && chosenProduct != middleProduct && chosenProduct != rightProduct){
+      // push the chosen products into the array of chosen products if they don't equal the previously chosen products
+      chosenProducts.push(chosenProduct);
+
+      // if 3 items are chosen break the loop
+      if (chosenProducts.length === 3){
+        break;
+      }
     }
   }
-  }
+// change the products to the products that were allowed into the new array
+  leftProduct = chosenProducts[0];
+  middleProduct = chosenProducts[1];
+  rightProduct = chosenProducts[2];
 };
 
-
+let renderRandomProducts = function(){
+  leftImg.src = leftProduct.imgSrc;
+  leftImgText.innerText = leftProduct.name;
+  middleImg.src = middleProduct.imgSrc;
+  middleImgText.innerText = middleProduct.name;
+  rightImg.src = rightProduct.imgSrc;
+  rightImgText.innerText = rightProduct.name;
+  leftProduct.timesShown++;
+  rightProduct.timesShown++;
+  middleProduct.timesShown++;
+}
 
 
 // create a function that handles the event of an product being clicked
 let handleProductClick = function (evt) {
+  totalClicks++;
   if (totalClicks < maxClicks) {
-    totalClicks++;
     if (evt.target == leftProductDiv || evt.target == leftImg || evt.target == leftImgText) {
       leftProduct.clicks++;
     } else if (evt.target == middleProductDiv || evt.target == middleImg || evt.target == middleImgText) {
@@ -110,11 +111,13 @@ let handleProductClick = function (evt) {
     } else if (evt.target == rightProductDiv || evt.target == rightImg || evt.target == rightImgText) {
       rightProduct.clicks++;
     }
+    chooseRandomProducts();
     renderRandomProducts();
-  } else {
-    imageSection.removeEventListener('click', handleProductClick)
-    renderProductDataTable();
-    renderProductDataChart();
+  } else if (totalClicks == maxClicks) {
+    imageSection.removeEventListener('click', handleProductClick);
+    dataButton.innerText = 'Show Survey Results';
+    dataButton.addEventListener('click', renderProductDataChart);
+    resultsButton.appendChild(dataButton);
   }
 };
 
@@ -139,7 +142,9 @@ let renderProductDataTable = function () {
   }
 };
 // create a function to render the chart with collected data
-let renderProductDataChart = function(){
+let renderProductDataChart = function(evt){
+  dataButton.removeEventListener('click', renderProductDataTable);
+  renderProductDataTable();
   for (let i = 0; i < allProducts.length; i++) {
     productLabels.push(allProducts[i].name);
     productTimesShown.push(allProducts[i].timesShown);
@@ -180,6 +185,18 @@ const config = {
   );
 }
 
+// fisher yates style shuffle function 
+function shuffle(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * i);
+    const temp = array[i];
+    array[i] = array[j];
+    array[j] = temp;
+  }
+}
+
+// choose the products to render first
+chooseRandomProducts();
 // load page with random products
 renderRandomProducts();
 

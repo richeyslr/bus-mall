@@ -8,7 +8,7 @@ img {
 }
 section,#dataSection{
   display: inline-flex;
-  margin: auto;
+  margin: 3vw;
 }
 h1,#productSelection{
   justify-content: center;

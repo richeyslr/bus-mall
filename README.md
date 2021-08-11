@@ -13,11 +13,16 @@ As a marketeer, I want to prevent users from seeing the same image in two subseq
 As a marketing manager, I would like a visual representation of how many times a product was clicked so that I can visually analyze the results.
 
 Experiment with using Chart.js to implement a graph showing click data
-[Resources:](https://www.chartjs.org/docs/latest/samples/bar/stacked.html) Chart.js stacked bar chart example
+[Chart.js Stacked Bar Chart:](https://www.chartjs.org/docs/latest/samples/bar/stacked.html)
+[Fisher Yates Shuffle Function:](https://medium.com/@nitinpatel_20236/how-to-shuffle-correctly-shuffle-an-array-in-javascript-15ea3f84bfb)
+
+## Lab 13
+
+
 
 TODO:
 
-- BUGGED prevent same product from showing up in back to back selections
+- WORKING prevent same product from showing up in back to back selections
 - FIXING ensure correct number of votings rounds occur
 - FIXING make button appear after voting is done
 - FIXING make button render totals data
