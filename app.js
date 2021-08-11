@@ -40,6 +40,8 @@ let allProducts = [
 let productLabels = [];
 let productClicks = [];
 let productTimesShown = [];
+// make array to prevent repeating images in consecutive voting rounds
+let productIndeces = [];
 
 // define names for DOM targets
 const imageSection = document.querySelector("#imageSection");
@@ -58,11 +60,19 @@ const resultsButton = document.querySelector("#resultsButton");
 // create a function to randomly generate array Products and render them on page in designated spot
 let renderRandomProducts = function () {
   let duplicates = true;
-  while (duplicates) {
+  let repeats = true;
+  while (duplicates && repeats) {
     let leftProductIndex = Math.floor(Math.random() * allProducts.length);
     let middleProductIndex = Math.floor(Math.random() * allProducts.length);
     let rightProductIndex = Math.floor(Math.random() * allProducts.length);
-    if (
+    // check for repeats from indeces array
+    if (productIndeces.indexOf(leftProductIndex) < 0 && productIndeces.indexOf(middleProductIndex) < 0 && productIndeces.indexOf(rightProductIndex) < 0){
+      repeats = false;
+      // clear the array if the checks pass
+      productIndeces.pop();
+      productIndeces.pop();
+      productIndeces.pop();
+      if (
       leftProductIndex != rightProductIndex &&
       leftProductIndex != middleProductIndex &&
       middleProductIndex != rightProductIndex
@@ -80,9 +90,14 @@ let renderRandomProducts = function () {
       middleImgText.innerText = allProducts[middleProductIndex].name;
       rightImg.src = allProducts[rightProductIndex].imgSrc;
       rightImgText.innerText = allProducts[rightProductIndex].name;
+      productIndeces.push(leftProductIndex, middleProductIndex, rightProductIndex);
     }
   }
+  }
 };
+
+
+
 
 // create a function that handles the event of an product being clicked
 let handleProductClick = function (evt) {
@@ -123,15 +138,15 @@ const labels = productLabels;
 const data = {
   labels: labels,
   datasets: [{
-    label: 'Times Selected',
+    label: 'Times Shown',
     backgroundColor: 'rgb(255, 99, 132)',
     borderColor: 'rgb(255, 99, 132)',
-    data: productClicks,
+    data: productTimesShown,
   },
-    {label: 'Times Shown',
+    {label: 'Times Selected',
     backgroundColor: 'rgb(25, 99, 132)',
     borderColor: 'rgb(25, 99, 132)',
-    data: productTimesShown,
+    data: productClicks,
 }
 ]
 };
@@ -142,18 +157,9 @@ const config = {
       plugins: {
         title: {
           display: true,
-          text: 'BusMall Product Survey Results'
+          text: 'BusMall Product Survey Data'
         },
       },
-      responsive: true,
-      scales: {
-        x: {
-          stacked: true,
-        },
-        y: {
-          stacked: true
-        }
-  }
 }
 }
   let productDataChart = new Chart(

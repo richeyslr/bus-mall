@@ -9,13 +9,18 @@ As a user, I would like to view a report of results after all rounds of voting h
 
 ## Lab 12 - Add a chart
 
-Experiment with using Chart.js to implement a graph showing click data
-[Resources:](https://www.chartjs.org/docs/latest/samples/bar/stacked.html) Chart.js stacked bar chart example 
+As a marketeer, I want to prevent users from seeing the same image in two subsequent iterations, so that they are not biased.
+As a marketing manager, I would like a visual representation of how many times a product was clicked so that I can visually analyze the results.
 
-To do:
-prevent same product from showing up in back to back selections
-make button appear after voting is done
-make button render totals data
-make totals data render in table form instead of list form
-style bar chart to better represent data
-consolidate while loop to check for dupes
+Experiment with using Chart.js to implement a graph showing click data
+[Resources:](https://www.chartjs.org/docs/latest/samples/bar/stacked.html) Chart.js stacked bar chart example
+
+TODO:
+
+- prevent same product from showing up in back to back selections WORKING
+- ensure correct number of votings rounds occur FIXING
+- make button appear after voting is done
+- make button render totals data
+- make totals data render in table form instead of list form FIXING
+- style bar chart to better represent data
+- stretch: let user choose how to view chart data
