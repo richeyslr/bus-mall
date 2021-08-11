@@ -17,10 +17,10 @@ Experiment with using Chart.js to implement a graph showing click data
 
 TODO:
 
-- prevent same product from showing up in back to back selections WORKING
-- ensure correct number of votings rounds occur FIXING
-- make button appear after voting is done
-- make button render totals data
-- make totals data render in table form instead of list form FIXING
+- BUGGED prevent same product from showing up in back to back selections
+- FIXING ensure correct number of votings rounds occur
+- FIXING make button appear after voting is done
+- FIXING make button render totals data
+- WORKING make totals data render in table form instead of list form
 - style bar chart to better represent data
 - stretch: let user choose how to view chart data

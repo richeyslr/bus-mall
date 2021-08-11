@@ -54,7 +54,7 @@ const middleImg = document.querySelector("#middleImg");
 const middleImgText = document.querySelector("#middleImgText");
 const rightImg = document.querySelector("#rightImg");
 const rightImgText = document.querySelector("#rightImgText");
-const totalsList = document.querySelector("#totalsList");
+const totalsTable = document.querySelector("#totalsTable");
 const resultsButton = document.querySelector("#resultsButton");
 
 // create a function to randomly generate array Products and render them on page in designated spot
@@ -113,17 +113,29 @@ let handleProductClick = function (evt) {
     renderRandomProducts();
   } else {
     imageSection.removeEventListener('click', handleProductClick)
-    renderProductDataList();
+    renderProductDataTable();
     renderProductDataChart();
   }
 };
 
 // create a function to render the results data to a list on the page
-let renderProductDataList = function () {
+let renderProductDataTable = function () {
+  let tableHead = totalsTable.createTHead();
+  let tHeadRow = tableHead.insertRow();
+  let productHead = tHeadRow.insertCell();
+  productHead.innerText = 'Products';
+  let timesShownHead = tHeadRow.insertCell();
+  timesShownHead.innerText = 'Times Shown';
+  let clickedHead = tHeadRow.insertCell();
+  clickedHead.innerText = 'Times Clicked';
   for (let i = 0; i < allProducts.length; i++) {
-    let newLi = document.createElement("li");
-    newLi.innerText = `${allProducts[i].name} was shown ${allProducts[i].timesShown} times and clicked ${allProducts[i].clicks} times`;
-    totalsList.appendChild(newLi);
+    let newRow = totalsTable.insertRow();
+    let nameCell = newRow.insertCell();
+    nameCell.textContent = allProducts[i].name;
+    let timesShownCell = newRow.insertCell();
+    timesShownCell.textContent = allProducts[i].timesShown;
+    let timesClickedCell = newRow.insertCell();
+    timesClickedCell.textContent = allProducts[i].clicks;
   }
 };
 // create a function to render the chart with collected data
