@@ -113,16 +113,22 @@ let handleProductClick = function (evt) {
     }
     chooseRandomProducts();
     renderRandomProducts();
-  } else if (totalClicks == maxClicks) {
+  } else if (totalClicks === maxClicks) {
     // update local storage every time voting process ends
     updateLocalStorage();
     imageSection.removeEventListener('click', handleProductClick);
     dataButton.innerText = 'Show Survey Results';
-    dataButton.addEventListener('click', renderProductDataChart);
+    dataButton.addEventListener('click', renderData);
     resultsButton.appendChild(dataButton);
   }
 };
 
+// create a function to render data
+function renderData(evt){
+  renderProductDataChart();
+  renderProductDataTable();
+  evt.target.removeEventListener('click', renderData);
+}
 // create a function to render the results data to a list on the page
 let renderProductDataTable = function () {
   let tableHead = totalsTable.createTHead();
@@ -144,9 +150,7 @@ let renderProductDataTable = function () {
   }
 };
 // create a function to render the chart with collected data
-let renderProductDataChart = function(evt){
-  dataButton.removeEventListener('click', renderProductDataTable);
-  renderProductDataTable();
+let renderProductDataChart = function(){
   for (let i = 0; i < allProducts.length; i++) {
     productLabels.push(allProducts[i].name);
     productTimesShown.push(allProducts[i].timesShown);
