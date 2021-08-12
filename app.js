@@ -114,6 +114,8 @@ let handleProductClick = function (evt) {
     chooseRandomProducts();
     renderRandomProducts();
   } else if (totalClicks == maxClicks) {
+    // update local storage every time voting process ends
+    updateLocalStorage();
     imageSection.removeEventListener('click', handleProductClick);
     dataButton.innerText = 'Show Survey Results';
     dataButton.addEventListener('click', renderProductDataChart);
@@ -194,11 +196,32 @@ function shuffle(array) {
     array[j] = temp;
   }
 }
+// create a function to store data locally
+function updateLocalStorage() {
+  //console.log("Updating localStorage....");
+  const arrayString = JSON.stringify(allProducts);
+  // key, value pairs
+  localStorage.setItem('Product', arrayString);
+} 
 
+// create a function to retrieve the locally stored data
+function getLocalStorage() {
+  // retrieve data from local storage
+  const oldProductData = localStorage.getItem('Product');
+  
+  // convert the data (array) from a string to something that we can use in JavaScript.
+  const productData = JSON.parse(oldProductData);
+
+  // If this is the first time we visit the page, there will not be an array for us to use in localStorage
+  if (productData !== null) {
+    allProducts = productData;
+  }
+}
 // choose the products to render first
 chooseRandomProducts();
 // load page with random products
 renderRandomProducts();
+getLocalStorage();
 
 // create an event listener to handle clicks
 imageSection.addEventListener("click", handleProductClick);
